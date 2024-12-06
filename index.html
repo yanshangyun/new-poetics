@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Text, Typing, Transcendence</title>
+    <style>
+        html, body {
+            margin:0;
+            padding:0;
+            overflow:hidden;
+            height:100vh;
+        }
+
+        ::-webkit-scrollbar{
+            display:none;
+        }
+
+        .container {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            height:100vh;
+            padding:0;
+        }
+
+        .top-left, .bottom-right, .top-right, .bottom-left{
+            border:1px black solid;
+            animation:load 2s cubic-bezier(0.75, 0, 0.25, 1);
+            background-color:white;
+        }
+
+        .top-left, .bottom-right{
+            display:flex;
+            flex-direction:row;
+            overflow:scroll;
+            white-space:nowrap;
+            box-sizing:border-box;
+        }
+
+        .top-right, .bottom-left{
+            display:flex;
+            flex-direction:column;
+            overflow:scroll;
+            white-space:nowrap;
+            box-sizing:border-box;
+        }
+
+        .title, .article {
+            flex-shrink:0; /* prevent shrinking */
+            width:50vw;
+            height:50vh;
+            padding:20px;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            /* border:red 1px solid; */
+            box-sizing:border-box;
+        }
+
+        img{
+            width:50vw;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-left">
+            <!--last-->
+            <div class="article">3</div>
+            <div class="article">
+                Week 1
+                <br>
+                Intro to Digital Linguistics: Spoken, Printed, Pixelated
+            </div>
+            <div class="article">
+                Text, Typing, Transcendence
+                <br>
+                New Poetics of Digital Communication
+            </div>
+            <!--first-->
+        </div>
+        <div class="top-right">
+            <!--last-->
+            <div class="article">3</div>
+            <div class="article">2</div>
+            <div class="article">Wintersession 2025</div>
+            <!--first-->
+        </div>
+        <div class="bottom-left">
+            <!--first-->
+            <div class="article">
+                In an age dominated by digital communication, how has technology transformed the way we use language to connect across distances, express nuance and emotion, and shape our fluid identities? Existing in the continuous feed of social media, the back and forth exchanges of text conversations, and the intimate spaces of personal notes, digital text has foregrounded the poetics of language into our everyday interactions. Emojis, tone indicators, shorthand forms, and typographic treatments continue to push the boundaries of our linguistic expression. Weightless, digital text transforms language into a malleable substance, allowing identities and expressions to shift and evolve more dynamically than ever, further sculpted by the fluidity of the internet. Yet, unlike speech or printed text, digital language exists in tension with the web's impermanence—endlessly replicable and shareable, yet perpetually on the brink of erasure, fragile and fleeting. How has this tension altered the ways we communicate and process our relationships and communities? How do the constraints and possibilities of digital platforms shape not only our language but our very identities?
+            </div>
+            <div class="article">2</div>
+            <div class="article">3</div>
+            <!--last-->
+        </div>
+        <div class="bottom-right">
+            <!--first-->
+            <div class="article">
+                Text
+            </div>
+            <div class="article">
+                This foundational week explores the basics of linguistics—phonetics, syntax, semantics, and pragmatics—and assesses how these tools are equipped (or unprepared) to handle the complexities of digital language. We’ll discuss how digital contexts like hyperlinking, indexing, and ephemeral text impact traditional linguistic concepts, examining how digital language compares with spoken and printed forms. How does digital communication introduce new linguistic qualities and how can we adapt our analytical framework to better interpret the nuances of online language? This week sets the groundwork for understanding digital language’s unique structures and challenges as the foundations of our research for the next few weeks.
+            </div>
+            <div class="article">3</div>
+            <!--last-->
+        </div>
+    </div>
+    <script>
+        const topLeft = document.querySelector('.top-left');
+        const bottomLeft = document.querySelector('.bottom-left');
+        const topRight = document.querySelector('.top-right');
+        const bottomRight = document.querySelector('.bottom-right');
+
+        //initial positions
+        function resetScrollPosition() {
+            const itemWidth = window.innerWidth / 2;
+            const itemHeight = window.innerHeight / 2;
+            const maxScrollHorizontal = itemWidth * (topLeft.children.length - 1);
+            const maxScrollVertical = itemHeight * (bottomLeft.children.length - 1);
+    
+            topLeft.scrollLeft = maxScrollHorizontal;
+            bottomLeft.scrollTop = 0;
+            topRight.scrollTop = maxScrollVertical;
+            bottomRight.scrolltopLeft = 0;
+        }
+    
+        window.addEventListener('load', resetScrollPosition); //reset positions on (re)load
+    
+        //sync scrolling
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const horizontal = e.deltaY;
+            const vertical = e.deltaY;
+
+            //horizontal scroll
+            topLeft.scrollLeft -= horizontal;
+            bottomRight.scrollLeft += horizontal;
+
+            //vertical scroll
+            topRight.scrollTop -= vertical;
+            bottomLeft.scrollTop += vertical;
+        }, { passive: false });
+    
+        window.addEventListener('resize', resetScrollPosition);
+    </script>
+    <script src="scripts/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Text, Typing, Transcendence</title>
+    <style>
+        @font-face {
+            font-family:pantasia;
+            src:url(pantasia.otf);
+        }
+        html, body {
+            margin:0;
+            padding:0;
+            overflow:hidden;
+            height:100vh;
+            cursor:crosshair;
+            background-color:black;
+            user-select:none;
+        }
+
+        ::-webkit-scrollbar{
+            display:none;
+        }
+
+        ::selection{
+            background-color:black;
+            color:white;
+        }
+
+        p{
+            font-size:13px;
+        }
+
+        h1{
+            line-height:1;
+            margin-top:0.4em;
+            font-size:20px;
+            font-weight:normal;
+        }
+
+        a{
+            color:blue;
+            text-decoration:underline;
+            cursor:pointer;
+        }
+
+        .container {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            height:100vh;
+            padding:0;
+        }
+
+        .section{
+            /* border:1px black solid; */
+            background-color:rgba(255, 255, 255, 1);
+            animation:load 2s cubic-bezier(0.75, 0, 0.25, 1);
+            display:flex;
+            flex-direction:row;
+            overflow-x:hidden;
+            white-space:nowrap;
+            box-sizing:border-box;
+        }
+
+        .content {
+            flex-shrink:0; /* prevent shrinking */
+            width:50vw;
+            height:50vh;
+            padding:20px;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            /* border:red 1px solid; */
+            box-sizing:border-box;
+        }
+
+        .content p{
+            /* text-align:justify; */
+        }
+
+        .top-left {
+            transform:rotateX(20deg) rotateY(-50deg);
+            transform-origin:100% 100%;
+        }
+
+        .top-right{
+            transform:rotateX(20deg) rotateY(50deg);
+            transform-origin:0% 100%;
+        }
+
+        .top-right .content, .top-left .content{
+            transform:scaleX(-1);
+        }
+
+        .bottom-right {
+            transform:rotateX(20deg) rotateY(-50deg);
+            transform-origin:0% 0%;
+        }
+
+        .bottom-left{
+            transform:rotateX(20deg) rotateY(50deg);
+            transform-origin:100% 0%;
+        }
+
+        /* @keyframes load{
+            0%{
+                transform:rotateX(0deg) rotateY(0deg);
+                filter:blur(5px);
+            }
+        } */
+
+        img{
+            width:45vw;
+        }
+
+        .time{
+            position:fixed;
+            z-index:99;
+            background-color:white;
+            color:black;
+            padding:5px;
+        }
+
+        .directory{
+            position:fixed;
+            right:0;
+            color:white;
+            padding:5px;
+        }
+
+        .directory a{
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <div class="time" id="currentTime"></div>
+    <div class="directory"><a href="https://www.are.na/ryan-yan/new-poetics-of-digital-communication" target="_blank">Are.na</a></div>
+    <div class="container">
+        <div class="section top-left"> <!--4-->
+        </div>
+        <div class="section top-right"> <!--3-->
+        </div>
+        <div class="section bottom-left"> <!--1-->
+        </div>
+        <div class="section bottom-right"> <!--2-->
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // POSITION FACES
+
+        const $topLeft = $('.top-left');
+        const $bottomLeft = $('.bottom-left');
+        const $topRight = $('.top-right');
+        const $bottomRight = $('.bottom-right');
+
+        function resetScrollPosition() {
+            const itemWidth = $(window).width() / 2;
+            const maxScroll = itemWidth * ($topLeft.children().length - 1);
+
+            $topLeft.scrollLeft(maxScroll);
+            $bottomLeft.scrollLeft(0);
+            $topRight.scrollLeft(maxScroll);
+            $bottomRight.scrollLeft(0);
+        }
+
+        $(window)
+        .on('load resize', resetScrollPosition)
+        .on('wheel', function (e) {
+            e.preventDefault();
+
+            const delta = e.originalEvent.deltaY;
+
+            $topLeft.scrollLeft($topLeft.scrollLeft() - delta);
+            $bottomRight.scrollLeft($bottomRight.scrollLeft() + delta);
+            $topRight.scrollLeft($topRight.scrollLeft() - delta);
+            $bottomLeft.scrollLeft($bottomLeft.scrollLeft() + delta);
+        });
+
+        // UPDATE TIME
+
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            $('#currentTime').text(`${hours}:${minutes}:${seconds}`);
+        }
+
+        $(document)
+        .ready(() => {
+            updateTime();
+            setInterval(updateTime, 1000); //update every second
+        });
+
+        // DYNAMIC CONTENT ORDERING, with help from GPT
+
+        //define content
+        const contents = {
+            1: `<div>
+                    <h1>Text, Typing, Transcendence
+                    <br>
+                    <i>The New Poetics of Digital Communication</i></h1>
+                    <hr>
+                </div>`,
+            2: `<div>
+                    <p><a href="https://ryanyan.ca" target="_blank">Ryan Yan</a>, BFA Graphic Design 2025</p>
+                    <p>Rhode Island School of Design<br>Wintersession 2025<br></p>
+                    <p>Advised by Kathy Wu</p>
+                </div>`,
+            3: `<div>
+                    <p>In an age dominated by digital communication, how has technology transformed the way we use language to connect across distances, express nuance and emotion, and shape our fluid identities? Existing in the continuous feed of social media, the back and forth exchanges of text conversations, and the intimate spaces of personal notes, digital text has foregrounded the poetics of language into our everyday interactions. Emojis, tone indicators, shorthand forms, and typographic treatments continue to push the boundaries of our linguistic expression. Weightless, digital text transforms language into a malleable substance, allowing identities and expressions to shift and evolve more dynamically than ever, further sculpted by the fluidity of the internet. Yet, unlike speech or printed text, digital language exists in tension with the web's impermanence—endlessly replicable and shareable, yet perpetually on the brink of erasure, fragile and fleeting. How has this tension altered the ways we communicate and process our relationships and communities? How do the constraints and possibilities of digital platforms shape not only our language but our very identities?</p>
+                </div>`,
+            4: `<div>
+                    <p>Through the lens of digital linguistics, this independent study project examines how technology empowers us to use language as a dynamic tool for connection, creativity, and identity formation. In a culture that blurs casual conversation and poetic expression, digital language thrives as a site of linguistic hybridity and mutualistic influence, bending to fit the unique constraints of our digital spaces. As language compresses, abstracts, and shifts in response to algorithms, platforms, and social contexts, how do we make sense of our interactions and expressions? By engaging with early works in computational poetics, internet language studies, and digital ethnographic research, this project is an linguistic anthropological investigation into our relationship with technology, language, and with each other—how this evolving connection is both a catalyst for language’s transformation and, perhaps, a reflection of shifting relationships between people themselves. In a world where typing and text are the primary conduits of connection, how does language bring intimacy within the reach of our fingers, while also revealing the distance that lingers beneath our digital conversations, and between us?</p>
+                </div>`,
+            5: `<div>
+                    <img src="images/speak.jpg">
+                </div>`,
+            6:  `<div>
+                    <p>Week 1</p>
+                    <h1>Intro to Digital Linguistics:<br>Spoken, Printed, Pixelated</h1>
+                    <p>This foundational week explores the basics of linguistics—phonetics, syntax, semantics, and pragmatics—and assesses how these tools are equipped (or unprepared) to handle the complexities of digital language. We’ll discuss how digital contexts like hyperlinking, indexing, and ephemeral text impact traditional linguistic concepts, examining how digital language compares with spoken and printed forms. How does digital communication introduce new linguistic qualities and how can we adapt our analytical framework to better interpret the nuances of online language? This week sets the groundwork for understanding digital language’s unique structures and challenges as the foundations of our research for the next few weeks.</p>
+                </div>`,
+            7:  `<div>
+                    <img src="images/link.jpg" style="width:40%">
+                    <img src="images/because-internet.jpg" style="height:100px">
+                </div>
+                `,
+            8:  `<div>
+                    <p>Week 2</p>
+                    <h1>Digital Formalities:<br>Nuances, Constraints, and Adaptation</h1>
+                    <p>Despite the lack nonverbal cues in digital communications, we have developed various conventions to convey tone, intent, and emotion. This week, we explore how elements like tone indicators, emojis, and typographic treatment of text bring nuance to digital interactions, and how these conventions are shaped by the platform-specific constraints of online spaces. What are the origins of these conventions and how have they seeped into our social frameworks? From character limits to algorithmic censorship, digital constraints compel users to adapt language creatively, using shorthand, abbreviations, and pictographic metaphors to communicate effectively. We’ll examine how these limitations impact meaning and how the tension between brevity and nuance limits, compresses, and ultimately gives life to new linguistic expressions.</p>
+                </div>
+                `,
+            8:  `
+                <div>
+                    <img src="images/wubi.png">
+                </div>
+                `,
+            9:  `<div>
+                    <p>Week 3</p>
+                    <h1>Text in Time:<br>Memory and Temporality</h1>
+                    <p>Copying and pasting pre-written text, editing a post, or correcting a typo—digital text exists in a unique space between impermanence and preservation. This week, we explore how digital tools like cloud storage, notes apps, and social media shape our experience of writing and memory, granting us more agency over how language interacts with time. We’ll analyze how ephemeral practices such as unsending, ghosting, archiving, and temporary posts influence interpersonal relationships and how the persistence of digital footprints impacts privacy, identity, and cultural continuity. How do asynchronous interactions like typing indicators and read receipts shape conversational flow and interpretation? Comparing these digital cues to linguistic features such as turn-taking and back-channeling, we’ll investigate how time and memory reshape engagement and social dynamics in the digital age.</p>
+            </div>
+            `,
+            10:  `<div>
+                    <p>Week 4</p>
+                    <h1>Virtual Identities:<br>Cultural Dissemination, Virality, and Hybridity</h1>
+                    <p>As language spreads through the internet, it absorbs new forms and meanings with each share, shift, and viral wave, reshaping itself through the countless voices and trends that carry it forward. This week, we examine how digital spaces act as a cultural melting pot of linguistic hybridity, enabling users to blend identities beyond languages, dialects, and cultural cues, incorporating broader social frameworks that find new accessibility and resonance online. We’ll explore how typing quirks, capitalization styles, and emoji choices function as sociolinguistic markers of belonging and identity, and consider the social weight of digital actions like liking a message or leaving someone on read. What strategies do users employ to navigate platform constraints and algorithmic amplification, and how does the viral spread of language shape collective memory and social norms? We’ll discuss how users leverage platform limitations to foster solidarity and identity within digital communities and consider the role of online constraints in amplifying global movements and reshaping cultural expression.</p>
+                </div>
+            `,
+            11:  `<div>
+                    <p>Week 5</p>
+                    <h1>Cultural Artifacts:<br>Compression, Poetics, and Mutualism</h1>
+                    <p>In the final week, we consider the future of language as it transforms into a powerful medium for creativity and cultural exchange. From algorithmic tools like ChatGPT that compress and abstract language, to the rise of digital poetics that allow direct, interactive experiences with language, we’ll explore how digital spaces become vessels for artistic expression. We’ll investigate how large language models flatten complex language, much like the compression of digital images and data, and how this distortion can obscure the cultural nuances and politics embedded in digital text—a medium inherently shaped by the human contexts from which it emerges. We’ll also examine the mutual influence between digital and oral language, looking at how internet conventions shape face-to-face interactions—and vice versa—offering insights into future shifts in human communication. What does this mutualism reveal about language’s adaptability, and how might the digital world redefine our understanding of communication and identity? Finally, we’ll look backward to deconstruct language, uncovering what these computational tools reveal about the essence of human communication and the potential to expand our linguistic canon.</p>
+                </div>
+            `,
+        };
+
+        //generate a unique order
+        function generateOrder(contentCount, offset) {
+            const order = [];
+            for (let i = 0; i < contentCount; i++) {
+                order.push(((i + offset) % contentCount) + 1);
+            }
+            return order;
+        }
+
+        //dynamic orders
+        const contentCount = Object.keys(contents).length; //total number of items
+        const orders = {
+            "top-left": generateOrder(contentCount, 3).reverse(),
+            "top-right": generateOrder(contentCount, 2).reverse(),
+            "bottom-left": Array.from({ length: contentCount }, (_, i) => i + 1),
+            "bottom-right": generateOrder(contentCount, 1),
+        };
+
+        $.each(orders, function (sectionClass, order) {
+            const $section = $(`.${sectionClass}`);
+            $.each(order, function (_, contentId) {
+                const $contentDiv = $('<div>')
+                    .addClass('content')
+                    .html(contents[contentId]);
+                $section.append($contentDiv);
+            });
+        });
+    </script>
+</body>
+</html>
