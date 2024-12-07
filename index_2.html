@@ -13,7 +13,7 @@
             overflow:hidden;
             height:100vh;
             cursor:crosshair;
-            background-color:white;
+            background-color:rgb(216, 216, 216);
             user-select:none;
         }
 
@@ -38,210 +38,117 @@
         }
 
         a{
+            color:blue;
             text-decoration:underline;
             cursor:pointer;
         }
 
-
         .container {
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            padding:0;
-            aspect-ratio:4/2.23;
-            max-height:90vh;
-            filter:drop-shadow(0 0 20px rgba(0, 0, 0, 0.077)) drop-shadow(0 0 0.2px black);
-        }
+    perspective: 800px; /* Add depth for the 3D effect */
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    transform-style: preserve-3d; /* Ensure child elements render in 3D space */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transform: rotateX(-30deg) rotateY(45deg) translateZ(-25vw); /* Top 3/4 down view */
+}
 
-        .section{
-            /* border:0.2px black solid; */
-            background-color:rgba(255, 255, 255, 1);
-            animation:load 2s cubic-bezier(0.75, 0, 0.25, 1);
-            display:flex;
-            flex-direction:row;
-            overflow-x:hidden;
-            white-space:nowrap;
-            box-sizing:border-box;
-        }
+.section {
+    position: absolute;
+    display: flex; /* Enable horizontal alignment for child content */
+    flex-direction: row; /* Align content horizontally */
+    width: 20vw; /* Section size */
+    height: 20vh; /* Section size */
+    overflow: hidden; /* Hide overflowing content */
+    white-space: nowrap; /* Prevent wrapping */
+    transform-origin: center; /* Set transform origin for 3D */
+    box-sizing: border-box;
+    background-color: white;
+    border: black 1px solid;
+}
 
-        .content {
-            flex-shrink:0; /* prevent shrinking */
-            width:100%;
-            height:100%;
-            padding:20px;
-            white-space: normal;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            box-sizing:border-box;
-        }
+.content {
+    flex-shrink: 0; /* Prevent shrinking */
+    width: 100%; /* Match parent section width */
+    height: 100%; /* Match parent section height */
+    box-sizing: border-box; /* Include padding and border in size */
+    padding: 20px; /* Optional inner padding */
+    white-space: normal; /* Allow text to wrap within the content */
+    word-wrap: break-word; /* Wrap long words */
+    overflow-wrap: break-word; /* Modern word wrapping */
+}
 
-        .content p{
-            /* text-align:justify; */
-        }
+/* 3D Face Transformations */
 
-        .content a{
-            color:blue;
-        }
+/* Front Face */
+.top-left{
+    transform: rotateY(0deg) translateZ(25vw); /* Move outward along Z-axis */
+}
 
-        .top-left {
-            transform:rotateX(20deg) rotateY(-50deg);
-            transform-origin:100% 100%;
-            background-image: linear-gradient(-150deg, rgba(255,0,0,0) 40%, rgba(0, 0, 0, 0.077) 80%);
-        }
+/* Back Face */
+.top-right{
+    transform: rotateY(180deg) translateZ(25vw); /* Opposite of the front face */
+}
 
-        .top-right{
-            transform:rotateX(20deg) rotateY(50deg);
-            transform-origin:0% 100%;
-            background-image: linear-gradient(150deg, rgba(255,0,0,0) 40%, rgba(0, 0, 0, 0.077) 80%);
-        }
+/* Left Face */
+.bottom-left{
+    transform: rotateY(-90deg) translateZ(25vw); /* Rotate to the left */
+    transform-origin: right center;
+}
 
-        .top-right .content, .top-left .content{
-            transform:scaleX(-1);
-        }
-
-        .bottom-right {
-            transform:rotateX(20deg) rotateY(-50deg);
-            transform-origin:0% 0%;
-        }
-
-        .bottom-left{
-            transform:rotateX(20deg) rotateY(50deg);
-            transform-origin:100% 0%;
-        }
-
-        @keyframes load{
-            0%{
-                transform:rotateX(0deg) rotateY(0deg);
-            }
-        }
+/* Right Face */
+.bottom-right{
+    transform: rotateY(90deg) translateZ(25vw); /* Rotate to the right */
+    transform-origin: left center;
+}
 
         img{
             width:45%;
-            mix-blend-mode:multiply;
+        }
+
+        .time{
+            position:fixed;
+            z-index:99;
+            background-color:white;
+            color:black;
+            padding:5px;
+        }
+
+        .resolution{
+            position:fixed;
+            bottom:0;
+            z-index:99;
+            background-color:white;
+            color:black;
+            padding:5px;
         }
 
         .directory{
             position:fixed;
-            z-index:100;
-            background-color:black;
+            right:0;
             color:white;
-            font-family:arial;
-            font-size:10px;
-            letter-spacing:0.2em;
-            width:100%;
-            bottom:0;
-            height:3em;
-            box-shadow:0 0 20px rgba(0, 0, 0, 0.238);
-            transition:height 0.5s cubic-bezier(.24,0,.08,1);
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            box-sizing:border-box;
-            width:100vw;
-            overflow:hidden;
+            padding:5px;
         }
 
-        .directory:hover{
-            height:80vh;
-            background-color:white;
-            color:black;
-        }
-
-        .cube-wrapper{
-            transition:filter 0.5s cubic-bezier(.24,0,.08,1);
-        }
-
-        .body-wrapper .directory:hover ~ .cube-wrapper{
-            filter:blur(10px);
-        }
-
-        .directory:hover .message{
-            transform:translateY(20px);
-        }
-
-        .nav{
-            position:absolute;
-            top:10px;
-            padding:0 10px 10px 10px;
-            justify-content:space-between;
-            box-sizing:border-box;
-            width:100%;
-            display:flex;
-            flex-direction:row;
-            box-sizing:border-box;
-        }
-
-        .message{
-            transform:translateY(200px);
-            flex-direction:row;
-            height:100%;
-            width:100%;
-            box-sizing:border-box;
-            display:flex;
-            justify-content:space-between;
-            padding:10px;
-            transition:transform 1s cubic-bezier(.2,0,.08,1);
-        }
-
-        #arena a{
+        .directory a{
             color:white;
-        }
-
-        #arena:hover{
-            background-color:white;
-            color:black;
-            border:black 0.2px solid;
-        }
-
-        #arena:hover a{
-            color:black;
-        }
-
-        .mobile-message{
-            position:fixed;
-            width:100vw;
-            height:100vh;
-            background:white;
-            display:none;
-            align-items:center;
-            justify-content:center;
-            z-index:999;
-            font-size:20px;
-        }
-
-        @media only screen and (max-width: 768px) {
-            .mobile-message{
-                display:flex;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="body-wrapper">
-        <div class="mobile-message">For the full experience, please view the site on desktop.</div>
-        <div class="directory">
-            <div class="nav">
-                <div id="currentTime"></div>
-                <div id="title">Text, Typing, Transcendence</div>
-                <div>Are.na ↓</div>
-            </div>
-            <div class="message">
-                <!-- <div>To use the page, please scroll vertically</div>
-                <div>Built in HTML, CSS, Javascript</div> -->
-                <iframe style="border:none;" width="100%" height="100%" src="https://www.are.na/ryan-yan/new-poetics-of-digital-communication/embed" title="Text, Typing, Transcendence"></iframe>
-            </div>
+    <div class="time" id="currentTime"></div>
+    <div class="resolution" id="resolution"></div>
+    <div class="directory"><a href="https://www.are.na/ryan-yan/new-poetics-of-digital-communication" target="_blank">Are.na</a></div>
+    <div class="container">
+        <div class="section top-left"> <!--4-->
         </div>
-        <div class ="cube-wrapper" style="display:flex; align-items:center; justify-content:center; width:100vw; height:95vh;">
-            <div class="container">
-                <div class="section top-left"> <!--4-->
-                </div>
-                <div class="section top-right"> <!--3-->
-                </div>
-                <div class="section bottom-left"> <!--1-->
-                </div>
-                <div class="section bottom-right"> <!--2-->
-                </div>
-            </div>
+        <div class="section top-right"> <!--3-->
+        </div>
+        <div class="section bottom-left"> <!--1-->
+        </div>
+        <div class="section bottom-right"> <!--2-->
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -311,7 +218,10 @@
                     <br>
                     <i>The New Poetics of Digital Communication</i></h1>
                     <hr>
-                    <p>In an age dominated by digital communication, how has technology transformed the way we use language to connect across distances, express nuance and emotion, and shape our fluid identities? Existing in the continuous feed of social media, the back and forth exchanges of text conversations, and the intimate spaces of personal notes, digital text has foregrounded the poetics of language into our everyday interactions. Emojis, tone indicators, shorthand forms, and typographic treatments continue to push the boundaries of our linguistic expression. Weightless, digital text transforms language into a malleable substance, allowing identities and expressions to shift and evolve more dynamically than ever, further sculpted by the fluidity of the internet. Yet, unlike speech or printed text, digital language exists in tension with the web's impermanence—endlessly replicable and shareable, yet perpetually on the brink of erasure, fragile and fleeting. How has this tension altered the ways we communicate and process our relationships and communities? How do the constraints and possibilities of digital platforms shape not only our language but our very identities?</p>
+                    <br>
+                    <p><a href="https://ryanyan.ca" target="_blank">Ryan Yan</a>, BFA Graphic Design 2025</p>
+                    <p>Rhode Island School of Design<br>Wintersession 2025<br></p>
+                    <p>Advised by Kathy Wu</p>
                 </div>`,
             2: `<div>
                     <p style="margin-bottom:-5px"><i>About this site</i></p><hr>
@@ -321,22 +231,16 @@
                         <br>
                         This page will be regularly updated with research, findings, and writing.
                         <br>
-                        <div style="display:flex; width:100%; flex-direction:row; bottom:0; border:black solid 0.5px; padding:5px; gap:10px;">
-                            <p style="flex-grow:1"><a href="https://ryanyan.ca" target="_blank">Ryan Yan</a>,<br>Graphic Design '25</p>
-                            <p>Rhode Island School of Design<br>Wintersession 2025<br></p>
-                            <p>Advised by Kathy Wu</p>
-                            <br>
-                        </div>
-                        <div style="display:flex; width:100%; flex-direction:row; position:absolute; bottom:0;">
-                            <p>Last Updated: December 6, 2024</p>
-                        </div>
+                        <br>
+                        Last update: December 6, 2024
                     </p>
                 </div>`,
             3: `<div>
                     <p style="margin-bottom:-5px"><i>Syllabus</i></p><hr>
-                    <p>Through the lens of digital linguistics, this independent study project examines how technology empowers us to use language as a dynamic tool for connection, creativity, and identity formation. In a culture that blurs casual conversation and poetic expression, digital language thrives as a site of linguistic hybridity and mutualistic influence, bending to fit the unique constraints of our digital spaces. As language compresses, abstracts, and shifts in response to algorithms, platforms, and social contexts, how do we make sense of our interactions and expressions? By engaging with early works in computational poetics, internet language studies, and digital ethnographic research, this project is an linguistic anthropological investigation into our relationship with technology, language, and with each other—how this evolving connection is both a catalyst for language’s transformation and, perhaps, a reflection of shifting relationships between people themselves. In a world where typing and text are the primary conduits of connection, how does language bring intimacy within the reach of our fingers, while also revealing the distance that lingers beneath our digital conversations, and between us?</p>
+                    <p>In an age dominated by digital communication, how has technology transformed the way we use language to connect across distances, express nuance and emotion, and shape our fluid identities? Existing in the continuous feed of social media, the back and forth exchanges of text conversations, and the intimate spaces of personal notes, digital text has foregrounded the poetics of language into our everyday interactions. Emojis, tone indicators, shorthand forms, and typographic treatments continue to push the boundaries of our linguistic expression. Weightless, digital text transforms language into a malleable substance, allowing identities and expressions to shift and evolve more dynamically than ever, further sculpted by the fluidity of the internet. Yet, unlike speech or printed text, digital language exists in tension with the web's impermanence—endlessly replicable and shareable, yet perpetually on the brink of erasure, fragile and fleeting. How has this tension altered the ways we communicate and process our relationships and communities? How do the constraints and possibilities of digital platforms shape not only our language but our very identities?</p>
                 </div>`,
             4: `<div>
+                    <p>Through the lens of digital linguistics, this independent study project examines how technology empowers us to use language as a dynamic tool for connection, creativity, and identity formation. In a culture that blurs casual conversation and poetic expression, digital language thrives as a site of linguistic hybridity and mutualistic influence, bending to fit the unique constraints of our digital spaces. As language compresses, abstracts, and shifts in response to algorithms, platforms, and social contexts, how do we make sense of our interactions and expressions? By engaging with early works in computational poetics, internet language studies, and digital ethnographic research, this project is an linguistic anthropological investigation into our relationship with technology, language, and with each other—how this evolving connection is both a catalyst for language’s transformation and, perhaps, a reflection of shifting relationships between people themselves. In a world where typing and text are the primary conduits of connection, how does language bring intimacy within the reach of our fingers, while also revealing the distance that lingers beneath our digital conversations, and between us?</p>
                 </div>`,
             5: `<div>
                     <img src="images/speak.jpg">
@@ -407,6 +311,17 @@
                     .addClass('content')
                     .html(contents[contentId]);
                 $section.append($contentDiv);
+            });
+        });
+
+        $('.section').each(function () {
+            const $section = $(this);
+            const sectionWidth = $section.width();
+            const sectionHeight = $section.height();
+
+            $section.find('.content').css({
+                width: sectionWidth,
+                height: sectionHeight,
             });
         });
     </script>
